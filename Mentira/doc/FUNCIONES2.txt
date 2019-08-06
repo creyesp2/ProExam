@@ -1,0 +1,23 @@
+﻿
+crear proyecto
+cambiar conexion
+enable-migration
+agregar clases
+agregar clases al identity model
+add-enable(addmigration)
+
+update-database
+
+
+
+
+
+
+Install-Package Microsoft.jQuery.Unobtrusive.Ajax
+
+agregar funciones de cliente
+moddifixarla
+
+
+
+https://github.com/codigofacilito/mvc_net.git

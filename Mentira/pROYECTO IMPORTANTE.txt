@@ -1,0 +1,599 @@
+USE [master]
+GO
+/****** Object:  Database [MD_MVC]    Script Date: 5/21/2018 12:12:10 AM ******/
+CREATE DATABASE [MD_MVC]
+GO
+ALTER DATABASE [MD_MVC] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [CRUDDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [MD_MVC] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [MD_MVC] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [MD_MVC] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [MD_MVC] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [MD_MVC] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [MD_MVC] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [MD_MVC] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [MD_MVC] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [MD_MVC] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [MD_MVC] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [MD_MVC] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [MD_MVC] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [MD_MVC] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [MD_MVC] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [MD_MVC] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [MD_MVC] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [MD_MVC] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [MD_MVC] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [MD_MVC] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [MD_MVC] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [MD_MVC] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [MD_MVC] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [MD_MVC] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [MD_MVC] SET  MULTI_USER 
+GO
+ALTER DATABASE [MD_MVC] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [MD_MVC] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [MD_MVC] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [MD_MVC] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+ALTER DATABASE [MD_MVC] SET DELAYED_DURABILITY = DISABLED 
+GO
+USE [CRUDDB]
+GO
+/****** Object:  Schema [Miselaneos]    Script Date: 5/21/2018 12:12:10 AM ******/
+CREATE SCHEMA [Miselaneos]
+GO
+/****** Object:  Schema [Orden]    Script Date: 5/21/2018 12:12:10 AM ******/
+CREATE SCHEMA [Orden]
+GO
+/****** Object:  Schema [Persona]    Script Date: 5/21/2018 12:12:10 AM ******/
+CREATE SCHEMA [Persona]
+GO
+/****** Object:  Schema [Productos]    Script Date: 5/21/2018 12:12:10 AM ******/
+CREATE SCHEMA [Productos]
+GO
+/****** Object:  Table [Miselaneos].[Estatus]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [Miselaneos].[Estatus](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [nchar](50) NULL,
+	[Id_Estatus] [int] NULL,
+ CONSTRAINT [PK_Estatus] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [Orden].[Condiciones]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Orden].[Condiciones](
+	[Id] [tinyint] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Condiciones] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Orden].[Orden]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Orden].[Orden](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Fecha] [date] NOT NULL,
+	[Id_Persona] [int] NULL,
+	[Id_Tipo] [int] NOT NULL,
+	[Id_Condiciones] [tinyint] NOT NULL,
+	[Subtotal] [numeric](18, 2) NOT NULL,
+	[Descuento] [numeric](18, 2) NOT NULL,
+	[Recargo] [numeric](18, 2) NOT NULL,
+	[Impuestos] [numeric](18, 2) NOT NULL,
+	[Total] [numeric](18, 2) NOT NULL,
+	[Id_Estatus] [int] NULL,
+	[SecuenciaEditable] [varchar](20) NULL,
+	[IdEditable] [varchar](20) NULL,
+	[Secuencia_Gobierno] [varchar](20) NULL,
+	[Comentario] [varchar](max) NULL,
+ CONSTRAINT [PK_Orden] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Orden].[Orden_Detalle]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Orden].[Orden_Detalle](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Id_Orden] [int] NOT NULL,
+	[Id_Producto] [int] NOT NULL,
+	[Descripcion] [varchar](max) NOT NULL,
+	[Cantidad] [numeric](18, 2) NOT NULL,
+	[Precio] [numeric](18, 2) NOT NULL,
+	[Impuesto] [numeric](18, 2) NOT NULL,
+	[Monto] [numeric](18, 2) NOT NULL,
+ CONSTRAINT [PK_Orden_Detalle] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Orden].[Orden_Tipo]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Orden].[Orden_Tipo](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](50) NOT NULL,
+	[Secuencia] [varchar](50) NULL,
+ CONSTRAINT [PK_Orden_Tipo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Persona].[Persona]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Persona].[Persona](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Nombres] [nvarchar](50) NULL,
+	[Apellidos] [nvarchar](50) NULL,
+	[Nombre_Completo]  AS (([Nombres]+' ')+[Apellidos]),
+	[Documento] [nchar](20) NULL,
+	[Titulo] [nchar](10) NULL,
+	[Contacto] [nvarchar](50) NULL,
+	[Empresa] [nvarchar](200) NULL,
+	[Correo] [nvarchar](200) NULL,
+	[Comentarios] [varchar](max) NULL,
+	[Direccion] [nvarchar](200) NULL,
+	[Direccion_De_Envio] [nvarchar](200) NULL,
+	[Fecha_Nacimiento] [date] NULL,
+	[Fecha] [datetime] NULL,
+	[Balance] [numeric](18, 2) NULL,
+	[Limite_Credito] [numeric](18, 2) NULL,
+	[Id_Tipo_Persona] [tinyint] NOT NULL,
+	[Id_Persona] [int] NULL,
+	[Id_Estatus] [int] NOT NULL,
+ CONSTRAINT [PK_Persona] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Persona].[Persona_Tipo]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Persona].[Persona_Tipo](
+	[Id] [tinyint] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](50) NULL,
+	[secuencia1] [nchar](20) NULL,
+	[secuencia2] [nchar](20) NULL,
+	[secuencia3] [nchar](20) NULL,
+ CONSTRAINT [PK_Persona_Tipo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Productos].[Producto]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Productos].[Producto](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Codigo] [varchar](50) NOT NULL,
+	[Cantidad] [numeric](18, 2) NOT NULL,
+	[Descripcion] [varchar](max) NOT NULL,
+	[Precio] [numeric](18, 2) NOT NULL,
+	[Costo] [numeric](18, 2) NOT NULL,
+	[Id_Impuesto] [tinyint] NOT NULL,
+	[Id_Tipo] [tinyint] NOT NULL,
+	[Id_Estatus] [int] NOT NULL,
+ CONSTRAINT [PK_Producto] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Productos].[Producto_Tipo]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Productos].[Producto_Tipo](
+	[Id] [tinyint] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](50) NULL,
+	[Secuencia1] [nchar](10) NULL,
+	[Secuencia2] [nchar](10) NULL,
+ CONSTRAINT [PK_Producto_Tipo] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [Productos].[Tasa_Impuesto]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Productos].[Tasa_Impuesto](
+	[Id] [tinyint] IDENTITY(1,1) NOT NULL,
+	[Descripcion] [varchar](50) NULL,
+	[Leyenda] [nchar](10) NULL,
+	[Tasa] [numeric](4, 2) NOT NULL,
+ CONSTRAINT [PK_Tasa_Impuesto] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  View [Orden].[v_Orden]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE View [Orden].[v_Orden] 
+With SchemaBinding
+As
+SELECT Orden.Id as Orden_Id, Orden.Fecha,
+	   Orden.Id_Persona,Persona.Nombre_Completo, Persona_Tipo.Descripcion as Persona_Tipo_descripcion, 
+	   Id_Tipo,Tipo_de_orden.Descripcion as Tipo_de_orden_descripcion,
+	   Id_Condiciones, Condiciones.Descripcion as Condiciones_Descripcion,
+	   Subtotal,Descuento,Recargo,Impuestos,Total,
+	   Orden.Id_Estatus, Estatus.Descripcion as Estatus_Descripcion,
+	   SecuenciaEditable,IdEditable,Secuencia_Gobierno,
+	   Orden.Comentario
+  FROM Orden.Orden as Orden Join
+	   Persona.Persona as Persona on Orden.Id_Persona = Persona.Id Join
+	   Orden.Orden_Tipo as Tipo_de_orden on Tipo_de_orden.Id = Orden.Id_Tipo Join
+	   Orden.Condiciones as Condiciones on Condiciones.Id = Orden.Id_Condiciones Join
+	   Miselaneos.Estatus as Estatus on Estatus.Id = Orden.Id_Estatus Join
+	   Persona.Persona_Tipo as Persona_Tipo on Persona_Tipo.Id = Persona.Id_Tipo_Persona
+GO
+/****** Object:  View [Orden].[v_Orden_Completa]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE View [Orden].[v_Orden_Completa] 
+With SchemaBinding
+As
+SELECT Orden.Id as Orden_Id, Orden.Fecha,
+	   Orden.Id_Persona,Persona.Nombre_Completo, Persona_Tipo.Descripcion as Persona_Tipo_descripcion, 
+	   Id_Tipo,Tipo_de_orden.Descripcion as Tipo_de_orden_descripcion,
+	   Id_Condiciones, Condiciones.Descripcion as Condiciones_Descripcion,
+	   Subtotal,Descuento,Recargo,Impuestos,Total,
+	   Orden.Id_Estatus, Estatus.Descripcion as Estatus_Descripcion,
+	   SecuenciaEditable,IdEditable,Secuencia_Gobierno, Orden.Comentario,
+	   Detalles.Id_Producto, Detalles.Descripcion as Detalles_Descripcion,
+	   Detalles.Cantidad, Detalles.Precio, Detalles.Impuesto, Detalles.Monto	   
+  FROM Orden.Orden as Orden Join
+	   Persona.Persona as Persona on Orden.Id_Persona = Persona.Id Join
+	   Orden.Orden_Tipo as Tipo_de_orden on Tipo_de_orden.Id = Orden.Id_Tipo Join
+	   Orden.Condiciones as Condiciones on Condiciones.Id = Orden.Id_Condiciones Join
+	   Miselaneos.Estatus as Estatus on Estatus.Id = Orden.Id_Estatus Join
+	   Persona.Persona_Tipo as Persona_Tipo on Persona_Tipo.Id = Persona.Id_Tipo_Persona Join
+	   Orden.Orden_Detalle as Detalles on Detalles.Id_Orden = Orden.Id
+GO
+/****** Object:  View [Persona].[v_Persona]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create View [Persona].[v_Persona]
+With SchemaBinding
+As
+SELECT persona.Id,Nombres,Apellidos,Nombre_Completo,Documento
+      ,Titulo,Contacto,Empresa,Correo,Comentarios
+      ,Direccion,Direccion_De_Envio,Fecha_Nacimiento
+      ,Cast(Fecha as Date) as Fecha,Balance,Limite_Credito,Id_Tipo_Persona, tipo.Descripcion as Tipo_Persona
+      ,Id_Persona,persona.Id_Estatus, estatus.Descripcion as Estatus_Descripcion
+  FROM Persona.Persona as persona Inner Join
+  Persona.Persona_Tipo as tipo On tipo.Id = persona.Id_Tipo_Persona Inner Join
+  Miselaneos.Estatus as estatus On estatus.Id = persona.Id_Estatus
+
+
+GO
+/****** Object:  View [Productos].[v_Producto]    Script Date: 5/21/2018 12:12:10 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE View [Productos].[v_Producto]
+With SchemaBinding
+AS
+SELECT producto.Id,Codigo,Cantidad,producto.Descripcion,Precio,
+	   Costo,Id_Impuesto, Impuestos.Descripcion as Descripcion_Impuesto, 
+	   Impuestos.Leyenda, Impuestos.Tasa, Id_Tipo, 
+	   tipo.Descripcion as Tipo_Descripcion,
+	   producto.Id_Estatus, estatus.Descripcion as Estatus_Descripcion
+FROM   Productos.Producto as producto Inner Join
+	   Productos.Producto_Tipo as tipo on tipo.Id = producto.Id_Tipo Inner Join
+	   Miselaneos.Estatus as estatus on estatus.Id = producto.Id_Estatus Inner Join
+	   Productos.Tasa_Impuesto as Impuestos on Impuestos.Id = Producto.Id_Impuesto
+
+GO
+SET IDENTITY_INSERT [Miselaneos].[Estatus] ON 
+
+GO
+INSERT [Miselaneos].[Estatus] ([Id], [Descripcion], [Id_Estatus]) VALUES (1, N'Activado                                          ', 1)
+GO
+INSERT [Miselaneos].[Estatus] ([Id], [Descripcion], [Id_Estatus]) VALUES (2, N'Desactivado                                       ', 1)
+GO
+INSERT [Miselaneos].[Estatus] ([Id], [Descripcion], [Id_Estatus]) VALUES (3, N'En proceso                                        ', 1)
+GO
+INSERT [Miselaneos].[Estatus] ([Id], [Descripcion], [Id_Estatus]) VALUES (4, N'Procesado                                         ', 1)
+GO
+INSERT [Miselaneos].[Estatus] ([Id], [Descripcion], [Id_Estatus]) VALUES (5, N'Cancelado                                         ', 1)
+GO
+INSERT [Miselaneos].[Estatus] ([Id], [Descripcion], [Id_Estatus]) VALUES (6, N'Vigente                                           ', 1)
+GO
+INSERT [Miselaneos].[Estatus] ([Id], [Descripcion], [Id_Estatus]) VALUES (7, N'Suspendido                                        ', 1)
+GO
+SET IDENTITY_INSERT [Miselaneos].[Estatus] OFF
+GO
+SET IDENTITY_INSERT [Persona].[Persona_Tipo] ON 
+
+GO
+INSERT [Persona].[Persona_Tipo] ([Id], [Descripcion], [secuencia1], [secuencia2], [secuencia3]) VALUES (1, N'Cliente', N'                    ', N'                    ', N'                    ')
+GO
+INSERT [Persona].[Persona_Tipo] ([Id], [Descripcion], [secuencia1], [secuencia2], [secuencia3]) VALUES (2, N'Empleado', N'                    ', N'                    ', N'                    ')
+GO
+INSERT [Persona].[Persona_Tipo] ([Id], [Descripcion], [secuencia1], [secuencia2], [secuencia3]) VALUES (3, N'Suplidor', N'                    ', N'                    ', N'                    ')
+GO
+INSERT [Persona].[Persona_Tipo] ([Id], [Descripcion], [secuencia1], [secuencia2], [secuencia3]) VALUES (4, N'Vendedor', N'                    ', N'                    ', N'                    ')
+GO
+INSERT [Persona].[Persona_Tipo] ([Id], [Descripcion], [secuencia1], [secuencia2], [secuencia3]) VALUES (5, N'Socio', N'                    ', N'                    ', N'                    ')
+GO
+INSERT [Persona].[Persona_Tipo] ([Id], [Descripcion], [secuencia1], [secuencia2], [secuencia3]) VALUES (6, N'Miembro', N'                    ', N'                    ', N'                    ')
+GO
+SET IDENTITY_INSERT [Persona].[Persona_Tipo] OFF
+GO
+SET IDENTITY_INSERT [Productos].[Producto_Tipo] ON 
+
+GO
+INSERT [Productos].[Producto_Tipo] ([Id], [Descripcion], [Secuencia1], [Secuencia2]) VALUES (1, N'Parte de Inventario', N'          ', N'          ')
+GO
+INSERT [Productos].[Producto_Tipo] ([Id], [Descripcion], [Secuencia1], [Secuencia2]) VALUES (2, N'Servicio', N'          ', N'          ')
+GO
+INSERT [Productos].[Producto_Tipo] ([Id], [Descripcion], [Secuencia1], [Secuencia2]) VALUES (3, N'Activo Fijo', N'          ', N'          ')
+GO
+INSERT [Productos].[Producto_Tipo] ([Id], [Descripcion], [Secuencia1], [Secuencia2]) VALUES (4, N'Muebles de Oficina', N'          ', N'          ')
+GO
+SET IDENTITY_INSERT [Productos].[Producto_Tipo] OFF
+GO
+SET IDENTITY_INSERT [Productos].[Tasa_Impuesto] ON 
+
+
+INSERT [Productos].[Tasa_Impuesto] ([Id], [Descripcion], [Leyenda], [Tasa]) VALUES (2, N'Impuestos de 18%', N'T2        ', CAST(18.00 AS Numeric(4, 2)))
+GO
+INSERT [Productos].[Tasa_Impuesto] ([Id], [Descripcion], [Leyenda], [Tasa]) VALUES (3, N'Impuestos de 8%', N'T3        ', CAST(8.00 AS Numeric(4, 2)))
+GO
+INSERT [Productos].[Tasa_Impuesto] ([Id], [Descripcion], [Leyenda], [Tasa]) VALUES (4, N'Impuestos de 11%', N'T4        ', CAST(11.00 AS Numeric(4, 2)))
+GO
+INSERT [Productos].[Tasa_Impuesto] ([Id], [Descripcion], [Leyenda], [Tasa]) VALUES (5, N'Impuestos de 13%', N'T5        ', CAST(13.00 AS Numeric(4, 2)))
+GO
+INSERT [Productos].[Tasa_Impuesto] ([Id], [Descripcion], [Leyenda], [Tasa]) VALUES (6, N'Excento', N'E         ', CAST(0.00 AS Numeric(4, 2)))
+GO
+SET IDENTITY_INSERT [Productos].[Tasa_Impuesto] OFF
+GO
+SET ANSI_PADDING ON
+
+GO
+/****** Object:  Index [UQ__Producto__06370DACE617EA6D]    Script Date: 5/21/2018 12:12:10 AM ******/
+ALTER TABLE [Productos].[Producto] ADD UNIQUE NONCLUSTERED 
+(
+	[Codigo] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [Persona].[Persona] ADD  CONSTRAINT [DF_Persona_Apellidos]  DEFAULT (N'Nombres + '' '' + Apellidos') FOR [Apellidos]
+GO
+ALTER TABLE [Persona].[Persona] ADD  CONSTRAINT [DF_Persona_Fecha]  DEFAULT (getdate()) FOR [Fecha]
+GO
+ALTER TABLE [Persona].[Persona] ADD  CONSTRAINT [DF_Persona_Balance]  DEFAULT ((0)) FOR [Balance]
+GO
+ALTER TABLE [Persona].[Persona] ADD  CONSTRAINT [DF_Persona_Limite_Credito]  DEFAULT ((0)) FOR [Limite_Credito]
+GO
+ALTER TABLE [Productos].[Producto] ADD  CONSTRAINT [DF_Producto_Cantidad]  DEFAULT ((0)) FOR [Cantidad]
+GO
+ALTER TABLE [Productos].[Producto] ADD  CONSTRAINT [DF_Producto_Precio]  DEFAULT ((0)) FOR [Precio]
+GO
+ALTER TABLE [Productos].[Producto] ADD  CONSTRAINT [DF_Producto_Costo]  DEFAULT ((0)) FOR [Costo]
+GO
+ALTER TABLE [Orden].[Orden]  WITH CHECK ADD  CONSTRAINT [FK_Orden_Condiciones] FOREIGN KEY([Id_Condiciones])
+REFERENCES [Orden].[Condiciones] ([Id])
+GO
+ALTER TABLE [Orden].[Orden] CHECK CONSTRAINT [FK_Orden_Condiciones]
+GO
+ALTER TABLE [Orden].[Orden]  WITH CHECK ADD  CONSTRAINT [FK_Orden_Estatus] FOREIGN KEY([Id_Estatus])
+REFERENCES [Miselaneos].[Estatus] ([Id])
+GO
+ALTER TABLE [Orden].[Orden] CHECK CONSTRAINT [FK_Orden_Estatus]
+GO
+ALTER TABLE [Orden].[Orden]  WITH CHECK ADD  CONSTRAINT [FK_Orden_Orden_Tipo] FOREIGN KEY([Id_Tipo])
+REFERENCES [Orden].[Orden_Tipo] ([Id])
+GO
+ALTER TABLE [Orden].[Orden] CHECK CONSTRAINT [FK_Orden_Orden_Tipo]
+GO
+ALTER TABLE [Orden].[Orden_Detalle]  WITH CHECK ADD  CONSTRAINT [FK_Orden_Detalle_Orden] FOREIGN KEY([Id_Orden])
+REFERENCES [Orden].[Orden] ([Id])
+GO
+ALTER TABLE [Orden].[Orden_Detalle] CHECK CONSTRAINT [FK_Orden_Detalle_Orden]
+GO
+ALTER TABLE [Orden].[Orden_Detalle]  WITH CHECK ADD  CONSTRAINT [FK_Orden_Detalle_Producto] FOREIGN KEY([Id_Producto])
+REFERENCES [Productos].[Producto] ([Id])
+GO
+ALTER TABLE [Orden].[Orden_Detalle] CHECK CONSTRAINT [FK_Orden_Detalle_Producto]
+GO
+ALTER TABLE [Persona].[Persona]  WITH CHECK ADD  CONSTRAINT [FK_Persona_Estatus] FOREIGN KEY([Id_Estatus])
+REFERENCES [Miselaneos].[Estatus] ([Id])
+GO
+ALTER TABLE [Persona].[Persona] CHECK CONSTRAINT [FK_Persona_Estatus]
+GO
+ALTER TABLE [Persona].[Persona]  WITH CHECK ADD  CONSTRAINT [FK_Persona_Persona_Tipo] FOREIGN KEY([Id_Tipo_Persona])
+REFERENCES [Persona].[Persona_Tipo] ([Id])
+GO
+ALTER TABLE [Persona].[Persona] CHECK CONSTRAINT [FK_Persona_Persona_Tipo]
+GO
+ALTER TABLE [Persona].[Persona]  WITH CHECK ADD  CONSTRAINT [FK_Persona_Persona3] FOREIGN KEY([Id_Persona])
+REFERENCES [Persona].[Persona] ([Id])
+GO
+ALTER TABLE [Persona].[Persona] CHECK CONSTRAINT [FK_Persona_Persona3]
+GO
+ALTER TABLE [Productos].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Estatus] FOREIGN KEY([Id_Estatus])
+REFERENCES [Miselaneos].[Estatus] ([Id])
+GO
+ALTER TABLE [Productos].[Producto] CHECK CONSTRAINT [FK_Producto_Estatus]
+GO
+ALTER TABLE [Productos].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Producto_Tipo] FOREIGN KEY([Id_Tipo])
+REFERENCES [Productos].[Producto_Tipo] ([Id])
+GO
+ALTER TABLE [Productos].[Producto] CHECK CONSTRAINT [FK_Producto_Producto_Tipo]
+GO
+ALTER TABLE [Productos].[Producto]  WITH CHECK ADD  CONSTRAINT [FK_Producto_Tasa_Impuesto] FOREIGN KEY([Id_Impuesto])
+REFERENCES [Productos].[Tasa_Impuesto] ([Id])
+GO
+ALTER TABLE [Productos].[Producto] CHECK CONSTRAINT [FK_Producto_Tasa_Impuesto]
+GO
+USE [master]
+GO
+ALTER DATABASE [MD_MVC] SET  READ_WRITE 
+GO
+
+%5U6a!5/
+
+proyecto codigo facilito 
+
+
+craear un  proyecto  a partir de un modelo vacio
+agregar un nuevo elemento para agregar el datamodel
+en esta ocacion lo vamos a hacer a partir de un modelo vacio 
+
+
+
+
+nuevo proyecto  construir modelo a travez de clases 
+instalamos entity framework  version 5.0
+Install-Package EntityFramework -version 5.0.0
+en modelo
+creamos la clase cliente  son clases que mapean las tablas de la base datos 
+creeamos otra clase de tipo cliente para hacer referencia 
+creamos una clase contexto que sirve como contexto para las clases entidad
+clase le llamo contexto aplicacion y la heredo de dbcontext
+agregamos el string de conection a al web config del proyecto
+
+<connectionStrings>
+     <add name="DefaultConnectionString" 
+     connectionsString="Data Source=VAIO\SQLEXPRESS(\.sqlexpress);Initial Catalog=Prueba;Integrated Security=true"
+      providerName="System.Data.SqlClient"/>
+     </connectionStrings>
+
+agrego una propiedad en db context
+
+migraciones me va servir para tener un mejor de lo que se va actualizar en la base datos 
+ejpmlo yo puedo actulizar la base datos  pero no puedo tener control de esas actulizaciones para eso me sirve la base 
+para eso debe ir a mi consola de administracion de paquetes y darle 
+enable-migrations  //contiene una clase que se llama configuration
+la clase se crea en una carpeta que se llama migrations
+en consolo paquuetes
+agregar una migracion que comntega el modelo de las clases que voy creando
+add migration (nombrearchivo)
+crea clases con numeros 
+luego le damos 
+update-database
+agregar controladores de clase usando controller mvc en blanco
+
+

@@ -1,0 +1,13 @@
+﻿from c in Clientes
+where c.Nombre.StartsWith("Mar")
+select new
+{
+c.ClienteId,
+nombreCliente = c.Nombre,
+nombreContacto = c.contactoCliente.NombreCompleto ?? c.Nombre,
+Correo = (from e in c.ClienteTelefonoes where t.Principal select e.Direccion).First() ?? "",
+Telefono =(from t in c.ClienteTelefonoes where t.Principal select t.NumeroTelefonico).First() ?? "",
+Direccion =(from d in c.ClienteDireccions where d.Principal
+  select d.Calle +""+ d.colonia).First() ?? ""
+
+}
